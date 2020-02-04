@@ -13,18 +13,22 @@ def get_corporate_profile(file_name):
     pdf_file = open(file_name, 'rb')
     read_pdf = PyPDF2.PdfFileReader(pdf_file)
     number_of_pages = read_pdf.getNumPages()
-    regex = r"corporate[\s{,3} \n]pro"
+    CPregex = r"corporate[\s{,3}|\n]pro"
+    TCregex = r"table[\s{,3}|\n]of[\s{,3}|\n]contents"
     corporate_profile = None
     for p in range(number_of_pages):
         page = read_pdf.getPage(p)
         page_content = page.extractText()
         page_content = f_correction(page_content)
 
-        match = re.search(regex, page_content.lower())
-        # Seach for the first page with the word 'company profile'
-        if match != None:
-            # print(p)
-            corporate_profile = page_content
-            break
+        CPmatch = re.search(CPregex, page_content.lower())
+        TCmatch = re.search(TCregex, page_content.lower())
+
+        # Seach for the first page with the word 'company profile which is not table of content'
+        if TCmatch == None:
+            if CPmatch != None:
+                # print(p)
+                corporate_profile = page_content
+                break
 
     return corporate_profile
