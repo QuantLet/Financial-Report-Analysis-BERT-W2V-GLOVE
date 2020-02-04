@@ -1,3 +1,5 @@
+from typing import Any
+
 import torch
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 import nltk
@@ -18,7 +20,7 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 max_sent_length = tokenizer.max_len
 print("Max number of tokens in one sentence:", tokenizer.max_len)
 
-def load_modeel():
+def load_model():
     # Load pretrain model of BERT
     model = BertModel.from_pretrained('bert-base-uncased')
     return model
@@ -29,13 +31,13 @@ def company2vector(corperate_profile, model):
 
     # Sentence tokenization
     sent = sent_tokenize(corperate_profile)
-    sent_token = []
+    sent_token= []
     for s in sent:
         sent_token.append((tokenizer.encode(s, pad_to_max_length=512)))
 
     # Turn tokens into index
     indexed_token = []
-    for st in sent1_token:
+    for st in sent_token:
         indexed_token.append(tokenizer.convert_tokens_to_ids(st))
 
     input2model = torch.tensor(indexed_token)
