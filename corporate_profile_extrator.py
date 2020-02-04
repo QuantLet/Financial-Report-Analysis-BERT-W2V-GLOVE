@@ -10,7 +10,6 @@ def f_correction(text):
 
 def get_corporate_profile(file_name):
     # Take the text in the cooperate profile page
-    global corporate_profile
     pdf_file = open(file_name, 'rb')
     read_pdf = PyPDF2.PdfFileReader(pdf_file)
     number_of_pages = read_pdf.getNumPages()
@@ -24,5 +23,7 @@ def get_corporate_profile(file_name):
         # Seach for the first page with the word 'company profile'
         if match != None:
             # print(p)
+            corporate_profile = page_content
+
             break
     return corporate_profile
