@@ -18,12 +18,11 @@ def get_corporate_profile(file_name):
         page_content = page.extractText()
         page_content = f_correction(page_content)
 
-        regex = r"corporate +proflle"
+        regex = r"corporate[\s{,3} \n]proflle"
         match = re.search(regex, page_content.lower())
         # Seach for the first page with the word 'company profile'
         if match != None:
             # print(p)
             corporate_profile = page_content
-
             break
     return corporate_profile
