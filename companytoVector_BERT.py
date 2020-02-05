@@ -44,11 +44,11 @@ def text_tokening(corporate_profile_text, tokenizer=tokenizer, verbose=0):
     if verbose == 1: # for checking
         # Turn index back to tokens
         tokens = []
-        for i in range(len(sent_token)):
-            tokens.append(tokenizer.convert_ids_to_tokens(sent_token[i]))
+        for i in range(len(sent_token_id)):
+            tokens.append(tokenizer.convert_ids_to_tokens(sent_token_id[i]))
 
         # Print out token and id pair for checking
-        for z in list(zip(sent_token, tokens)):         # loop over each sentence
+        for z in list(zip(sent_token_id, tokens)):         # loop over each sentence
             for i in range(len(z[0])):                  # loop over each tokens and ids
                 print(z[0][i], z[1][i])
 
