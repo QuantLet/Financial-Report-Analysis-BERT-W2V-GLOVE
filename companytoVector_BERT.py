@@ -29,34 +29,36 @@ def load_model():
     return model
 
 
-def text_tokening(corperate_profile_text, tokenizer=tokenizer, verbose=0):
+def text_tokening(corporate_profile_text, tokenizer=tokenizer, verbose=0):
     # Sentence tokenization
-    sent = sent_tokenize(corperate_profile_text)
+    sent = sent_tokenize(corporate_profile_text)
 
     # Remove unwanted characters (this function should be factored out later)
     for i, s in enumerate(sent):
         sent[i] = s.replace('\n', '')
 
-    sent_token = []
+    sent_token_id = []
     for s in sent:
-        sent_token.append((tokenizer.encode(s, pad_to_max_length=tokenizer.max_len)))
+        sent_token_id.append((tokenizer.encode(s, pad_to_max_length=tokenizer.max_len)))
 
-    if verbose == 1:
-        # Turn tokens into index
-        indexed_token = []
-        for st in sent_token:
-            indexed_token.append(tokenizer.convert_tokens_to_ids(st))
+    if verbose == 1: # for checking
+        # Turn index back to tokens
+        tokens = []
+        for i in range(len(sent_token)):
+            tokens.append(tokenizer.convert_ids_to_tokens(sent_token[i]))
 
-        for pairs in (list(zip(indexed_token, sent_token))):
-            print(pairs)
+        # Print out token and id pair for checking
+        for z in list(zip(sent_token, tokens)):         # loop over each sentence
+            for i in range(len(z[0])):                  # loop over each tokens and ids
+                print(z[0][i], z[1][i])
 
-    return sent_token
+    return sent_token_id
 
 
-def company2vector(corperate_profile, model):
+def company2vector(sent_token_id, model):
     # Turn corperate Profile to vector
 
-    input2model = torch.tensor(indexed_token)
+    input2model = torch.tensor(sent_token_id)
     outputs = model(input2model)
 
     # Take the last hidden layer outputs and average over sentence and words
