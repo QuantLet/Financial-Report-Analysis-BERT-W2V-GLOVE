@@ -14,7 +14,8 @@ def get_corporate_profile(file_name):
     read_pdf = PyPDF2.PdfFileReader(pdf_file)
     number_of_pages = read_pdf.getNumPages()
     CPregex = r"corporate[\s{,3}|\n]pro"
-    TCregex = r"table[\s{,3}|\n]of[\s{,3}|\n]content"
+    # TCregex = r"table[\s{,3}|\n]of[\s{,3}|\n]content"
+    TCregex = r"content"
     corporate_profile = None
     for p in range(number_of_pages):
         page = read_pdf.getPage(p)
