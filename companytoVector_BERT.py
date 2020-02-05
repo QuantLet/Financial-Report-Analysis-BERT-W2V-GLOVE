@@ -29,19 +29,28 @@ def load_model():
     return model
 
 
-def text_indexing(corperate_profile_text, tokenizer=tokenizer):
+def text_tokening(corperate_profile_text, tokenizer=tokenizer, verbose=0):
     # Sentence tokenization
     sent = sent_tokenize(corperate_profile_text)
+
+    # Remove unwanted characters (this function should be factored out later)
+    for i, s in enumerate(sent):
+        sent[i] = s.replace('\n', '')
+
     sent_token = []
     for s in sent:
         sent_token.append((tokenizer.encode(s, pad_to_max_length=tokenizer.max_len)))
 
-    # Turn tokens into index
-    indexed_token = []
-    for st in sent_token:
-        indexed_token.append(tokenizer.convert_tokens_to_ids(st))
+    if verbose == 1:
+        # Turn tokens into index
+        indexed_token = []
+        for st in sent_token:
+            indexed_token.append(tokenizer.convert_tokens_to_ids(st))
 
-    return indexed_token
+        for pairs in (list(zip(indexed_token, sent_token))):
+            print(pairs)
+
+    return sent_token
 
 
 def company2vector(corperate_profile, model):
