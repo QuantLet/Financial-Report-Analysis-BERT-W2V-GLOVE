@@ -41,13 +41,14 @@ def text_tokening(corporate_profile_text, tokenizer=tokenizer, verbose=0):
     for s in sent:
         sent_token_id.append((tokenizer.encode(s, pad_to_max_length=tokenizer.max_len)))
 
-    if verbose == 1:  # for checking
+    if verbose > 0:  # for checking
         # Turn index back to tokens
         tokens = []
         for i in range(len(sent_token_id)):
             tokens.append(tokenizer.convert_ids_to_tokens(sent_token_id[i]))
 
         # Print out token and id pair for checking
+    if verbose > 1:
         for z in list(zip(sent_token_id, tokens)):         # loop over each sentence
             for i in range(len(z[0])):                     # loop over each tokens and ids
                 print(z[0][i], z[1][i])
@@ -68,7 +69,7 @@ def company2vector(sent_token_id, model, average_over_sent = True):
         company_vector = torch.mean(company_vector, dim=0)
 
     else:
-        company_vector = outputs
+        company_vector = outputs[0]
 
     # to numpy
     company_vector = company_vector.detach().numpy()
