@@ -74,3 +74,54 @@ def company2vector(sent_token_id, model, average_over_sent = True):
     company_vector = company_vector.detach().numpy()
 
     return company_vector
+
+
+def vector_of_each_whole_token(corporate_profile_tokens, result):
+  '''
+  Inputs:
+  cororate_profile_token: The second output of text_tokening()
+  result: The last layer of BERT, output of company_vector()
+
+  Output:
+  Pandas DataFrame with sentence ids, token ids, and token vectors
+  '''
+
+  # Indexing subwords
+  R = [] # Sentence level
+  for s in range(len(corporate_profile_tokens[1][:])):
+    r = [] # Token level
+    i=-1
+    for t in corporate_profile_tokens[1][s][1]: # [second output][sent][the tokens]
+      if t.startswith("##"):
+        r.append(i)
+      else:
+        i+=1
+        r.append(i)
+    R.append(r)
+
+  # Taking mean of sub words
+  corrected = []
+  sent_text_list = []
+  for s, r in enumerate(R): # For each sentence in last layer
+    sent_vector = []
+    for n in np.unique(r):  # For each token in sentences
+      mask = np.array(r) == n
+      temp = np.mean(result[s:s+1,mask,:], axis=1, keepdims=True) # Taking mean over sub words
+      sent_vector.append(temp)
+    sent_vector = np.concatenate(sent_vector, axis=1)
+    corrected.append(sent_vector)
+
+    sent_text = tokenizer.convert_tokens_to_string(corporate_profile_tokens[1][s][1])
+    sent_text = sent_text.split(' ')
+    sent_text_list.append(sent_text)
+
+    # Create Pandas DataFrame
+    pd_temp = []
+    for ns, s in enumerate(sent_text_list):
+      for nt, t in enumerate(s):
+        if (t != '[CLS]') & (t != '[PAD]') & (t != '[SEP]'):
+          pd_temp.append({'sentence_number':ns,
+                          'token_number':nt,
+                          'token':t, 'vector': corrected[ns][0,nt,:]})
+    pd_temp = pd.DataFrame(pd_temp)
+    return pd_temp
