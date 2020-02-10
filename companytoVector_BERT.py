@@ -8,6 +8,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 nltk.download('punkt')
 
 import numpy as np
+import pandas as pd
+
 # OPTIONAL: if you want to have more information on what's happening, activate the logger as follows
 import logging
 # logging.basicConfig(level=logging.INFO)
