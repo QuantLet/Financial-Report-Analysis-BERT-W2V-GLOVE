@@ -55,15 +55,18 @@ def text_tokening(corporate_profile_text, tokenizer=tokenizer, verbose=0):
     return sent_token_id
 
 
-def company2vector(sent_token_id, model):
-    # Turn corperate Profile to vector
-
+def company2vector(sent_token_id, model, average_over_sent = True):
+    # Turn corporate Profile to vector
     input2model = torch.tensor(sent_token_id)
     outputs = model(input2model)
 
     # Take the last hidden layer outputs and average over sentence and words
-    company_vector = torch.mean(outputs[0], dim=0)
-    company_vector = torch.mean(company_vector, dim=0)
+    if average_over_sent:
+        company_vector = torch.mean(outputs[0], dim=0)
+        company_vector = torch.mean(company_vector, dim=0)
+
+    else:
+        company_vector = outputs
 
     # to numpy
     company_vector = company_vector.detach().numpy()

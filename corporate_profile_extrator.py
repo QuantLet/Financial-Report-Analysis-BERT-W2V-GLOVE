@@ -27,7 +27,7 @@ def get_corporate_profile(file_name):
 
         # Seach for the first page with the word 'company profile which is not table of content'
         if TCmatch == None:
-            if CPmatch != None:
+            if CPmatch != None: # need to check whether there is enough content
                 # print(p)
                 corporate_profile = page_content
                 break
