@@ -1,0 +1,11 @@
+Name of Quantlet: 'Financial Report Analysis BERT W2V GLOVE'
+
+Published in: 'Financial Report Analysis BERT W2V GLOVE'
+
+Description: 'To extract and via word embedding methods to visualise financial reports.'
+
+Keywords: 'BERT, w2v, GLOVE, text analysis, LLE, dimension reduction'
+
+Author: 'Francis Liu'
+
+Submitted:   '12 March 2020'
