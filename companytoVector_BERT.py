@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 # Load pre-trained model tokenizer (vocabulary)
 # max_sent_length = 512 # BERT Base
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-max_sent_length = tokenizer.max_len
-print("Max number of tokens in one sentence:", tokenizer.max_len)
+max_sent_length = tokenizer.model_max_length
+print("Max number of tokens in one sentence:", tokenizer.model_max_length)
 
 
 def load_model():
@@ -41,7 +41,7 @@ def text_tokening(corporate_profile_text, tokenizer=tokenizer, verbose=0):
 
     sent_token_id = []
     for s in sent:
-        sent_token_id.append((tokenizer.encode(s, pad_to_max_length=tokenizer.max_len)))
+        sent_token_id.append((tokenizer.encode(s, pad_to_max_length=tokenizer.model_max_length)))
 
     if verbose > 0:  # for checking
         # Turn index back to tokens
